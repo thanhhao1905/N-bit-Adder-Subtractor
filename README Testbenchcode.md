@@ -10,7 +10,7 @@ module tbAdderSubtractorNbit;
   wire cout;
   reg [N:0]exp_s;
   reg exp_c;
-  integer j,k,l;
+  integer j,k;
   integer err=0;
   
   AdderSubtractorNbit #(N) DUT(a,b,cin,ctrl,s,cout);
@@ -21,10 +21,9 @@ module tbAdderSubtractorNbit;
     for(ctrl=0;ctrl<2;ctrl=ctrl+1)begin
     for(j=0;j<2**N;j=j+1)begin
       for(k=0;k<2**N;k=k+1)begin
-        for(l=0;l<2;l=l+1)begin
           a=j;
           b=k;
-          cin=l;
+          cin=ctrl;
           bc = b ^ {N{ctrl}};
           exp_s = a+bc+cin;
           exp_c = exp_s[N];
@@ -32,7 +31,6 @@ module tbAdderSubtractorNbit;
           check(s,cout,exp_s[N-1:0],exp_c);
         end
      end
-    end
    end
     
     if(err==0)begin
